@@ -1,43 +1,83 @@
-// HTML Elements
-window.onload = function () {
-    var text = document.querySelectorAll("[data-text]");
-    text.forEach(function (textElement) {
-        return styles(textElement, textElement.getAttribute("defaultText"));
-    });
-};
-// HTML Elements
 // Styles
-var defaultText = "KILL YOURSELF";
-var letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-function styles(text, defaultText) {
-    var intervalSpeed = 50;
-    var interval = setInterval(function () {
-        text.innerText = text.innerText
-            .split("")
-            .map(function () {
-            return letters[Math.floor(Math.random() * 26)];
-        })
-            .join("");
-    }, intervalSpeed);
-    text.onmouseover = function (event) {
-        var iteration = 0;
-        clearInterval(interval);
-        interval = setInterval(function () {
-            text.innerText = text.innerText
+var MenuItem = /** @class */ (function () {
+    function MenuItem(element, index) {
+        var _this = this;
+        this.element = element;
+        this.index = index;
+        this.defaultText = this.element.getAttribute("defaultText");
+        this.interval = setInterval(function () {
+            _this.element.innerText = _this.element.innerText
                 .split("")
-                .map(function (letter, index) {
+                .map(function () {
+                return letters[Math.floor(Math.random() * 26)];
+            })
+                .join("");
+        }, 30);
+        this.element.onmouseover = function () {
+            decriptMenu(menuItems, _this.index);
+        };
+    }
+    MenuItem.prototype.setDecript = function (next) {
+        var _this = this;
+        var iteration = 0;
+        clearInterval(this.interval);
+        this.interval = setInterval(function () {
+            _this.element.innerText = _this.element.innerText
+                .split("")
+                .map(function (_letter, index) {
                 if (index < iteration) {
-                    return defaultText[index];
+                    return _this.defaultText[index];
                 }
                 return letters[Math.floor(Math.random() * 26)];
             })
                 .join("");
-            if (iteration >= defaultText.length) {
-                clearInterval(interval);
+            if (iteration >= _this.defaultText.length) {
+                clearInterval(_this.interval);
+                if (next != undefined && next[0][0] != undefined) {
+                    next[0][0].setDecript(next.slice(1, next.length));
+                    if (next[0].length > 1) {
+                        next[0]
+                            .slice(1, next[0].length)
+                            .forEach(function (item) { return item.setDecript(undefined); });
+                    }
+                }
             }
             iteration += 1 / 3;
-        }, intervalSpeed);
-        text.onmouseover = function () { };
+        }, 25);
     };
+    return MenuItem;
+}());
+function decriptMenu(menu, indexFrom) {
+    var order = decriptOrder(menu, indexFrom);
+    menu[indexFrom].setDecript(order.slice(1, order.length));
+    menu.forEach(function (item) {
+        item.element.onmouseover = null;
+    });
+}
+function decriptOrder(menu, indexFrom) {
+    var order = [[menu[indexFrom]]];
+    for (var i = 1; i < menu.length; i++) {
+        var next = [];
+        if (indexFrom - i >= 0)
+            next.push(menu[indexFrom - i]);
+        if (indexFrom + i < menu.length)
+            next.push(menu[indexFrom + i]);
+        if (next[0] != undefined)
+            order.push(next);
+    }
+    return order;
 }
 // styles
+// HTML Elements
+var menuItems = [];
+window.onload = function () {
+    var menu = document.querySelectorAll("[data-text]");
+    for (var i = 0; i < menu.length; i++) {
+        var textElement = menu.item(i);
+        menuItems.push(new MenuItem(textElement, i));
+    }
+};
+// HTML Elements
+// variables
+var letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+// variabels
