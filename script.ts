@@ -9,8 +9,9 @@ class Title {
     this.defaultText = element.getAttribute("defaultText")!;
   }
 
-  setDecript() {
+  setDecript(next: MenuItem[]) {
     let iteration: number = 0;
+    let nextStarted: boolean = false;
     clearInterval(this.interval);
     this.interval = setInterval(() => {
       this.element.innerText = this.element.innerText
@@ -23,12 +24,17 @@ class Title {
           return upperLetters[Math.floor(Math.random() * 26)];
         })
         .join("");
+      if (iteration >= this.defaultText.length - 5 && !nextStarted) {
+        next[0].setDecript(next.slice(1, next.length));
+        nextStarted = true;
+      }
+
       if (iteration >= this.defaultText.length) {
         clearInterval(this.interval);
       }
 
-      iteration += 1 / 7;
-    }, 20);
+      iteration += 1 / 4;
+    }, 30);
   }
 }
 
@@ -51,13 +57,9 @@ class MenuItem {
         })
         .join("");
     }, 25);
-
-    this.element.onmouseover = () => {
-      decriptMenu(menuItems, this.index);
-    };
   }
 
-  setDecript(next: MenuItem[][]) {
+  setDecript(next: MenuItem[]) {
     let iteration: number = 0;
     clearInterval(this.interval);
     this.interval = setInterval(() => {
@@ -73,12 +75,7 @@ class MenuItem {
         .join("");
       // cant have items less than 3 characters
       if (iteration == 3 && next.length != 0) {
-        next[0][0].setDecript(next.slice(1, next.length));
-        if (next[0].length > 1) {
-          next[0]
-            .slice(1, next[0].length)
-            .forEach((item) => item.setDecript([]));
-        }
+        next[0].setDecript(next.slice(1, next.length));
       }
 
       if (iteration >= this.defaultText.length) {
@@ -91,23 +88,7 @@ class MenuItem {
 }
 
 function decriptMenu(menu: MenuItem[], indexFrom: number) {
-  let order: MenuItem[][] = decriptOrder(menu, indexFrom);
-  menu[indexFrom].setDecript(order.slice(1, order.length));
-
-  menu.forEach((item) => {
-    item.element.onmouseover = null;
-  });
-}
-
-function decriptOrder(menu: MenuItem[], indexFrom: number): MenuItem[][] {
-  let order: MenuItem[][] = [[menu[indexFrom]]];
-  for (let i = 1; i < menu.length; i++) {
-    let next: MenuItem[] = [];
-    if (indexFrom - i >= 0) next.push(menu[indexFrom - i]);
-    if (indexFrom + i < menu.length) next.push(menu[indexFrom + i]);
-    if (next[0] != undefined) order.push(next);
-  }
-  return order;
+  menu[indexFrom].setDecript(menu.slice(1, menu.length));
 }
 // styles
 
@@ -121,9 +102,9 @@ window.onload = () => {
     let textElement = menu.item(i);
     menuItems.push(new MenuItem(textElement, i));
   }
+  title = new Title(document.querySelector("[data-title]")!);
   setTimeout(() => {
-    title = new Title(document.querySelector("[data-title]")!);
-    title.setDecript();
+    title.setDecript(menuItems);
   }, 50);
 };
 // HTML Elements

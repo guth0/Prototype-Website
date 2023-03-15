@@ -4,9 +4,10 @@ var Title = /** @class */ (function () {
         this.element = element;
         this.defaultText = element.getAttribute("defaultText");
     }
-    Title.prototype.setDecript = function () {
+    Title.prototype.setDecript = function (next) {
         var _this = this;
         var iteration = 0;
+        var nextStarted = false;
         clearInterval(this.interval);
         this.interval = setInterval(function () {
             _this.element.innerText = _this.element.innerText
@@ -18,11 +19,15 @@ var Title = /** @class */ (function () {
                 return upperLetters[Math.floor(Math.random() * 26)];
             })
                 .join("");
+            if (iteration >= _this.defaultText.length - 5 && !nextStarted) {
+                next[0].setDecript(next.slice(1, next.length));
+                nextStarted = true;
+            }
             if (iteration >= _this.defaultText.length) {
                 clearInterval(_this.interval);
             }
-            iteration += 1 / 7;
-        }, 20);
+            iteration += 1 / 4;
+        }, 30);
     };
     return Title;
 }());
@@ -40,9 +45,6 @@ var MenuItem = /** @class */ (function () {
             })
                 .join("");
         }, 25);
-        this.element.onmouseover = function () {
-            decriptMenu(menuItems, _this.index);
-        };
     }
     MenuItem.prototype.setDecript = function (next) {
         var _this = this;
@@ -60,12 +62,7 @@ var MenuItem = /** @class */ (function () {
                 .join("");
             // cant have items less than 3 characters
             if (iteration == 3 && next.length != 0) {
-                next[0][0].setDecript(next.slice(1, next.length));
-                if (next[0].length > 1) {
-                    next[0]
-                        .slice(1, next[0].length)
-                        .forEach(function (item) { return item.setDecript([]); });
-                }
+                next[0].setDecript(next.slice(1, next.length));
             }
             if (iteration >= _this.defaultText.length) {
                 clearInterval(_this.interval);
@@ -76,24 +73,7 @@ var MenuItem = /** @class */ (function () {
     return MenuItem;
 }());
 function decriptMenu(menu, indexFrom) {
-    var order = decriptOrder(menu, indexFrom);
-    menu[indexFrom].setDecript(order.slice(1, order.length));
-    menu.forEach(function (item) {
-        item.element.onmouseover = null;
-    });
-}
-function decriptOrder(menu, indexFrom) {
-    var order = [[menu[indexFrom]]];
-    for (var i = 1; i < menu.length; i++) {
-        var next = [];
-        if (indexFrom - i >= 0)
-            next.push(menu[indexFrom - i]);
-        if (indexFrom + i < menu.length)
-            next.push(menu[indexFrom + i]);
-        if (next[0] != undefined)
-            order.push(next);
-    }
-    return order;
+    menu[indexFrom].setDecript(menu.slice(1, menu.length));
 }
 // styles
 // HTML Elements
@@ -105,9 +85,9 @@ window.onload = function () {
         var textElement = menu.item(i);
         menuItems.push(new MenuItem(textElement, i));
     }
+    title = new Title(document.querySelector("[data-title]"));
     setTimeout(function () {
-        title = new Title(document.querySelector("[data-title]"));
-        title.setDecript();
+        title.setDecript(menuItems);
     }, 50);
 };
 // HTML Elements
