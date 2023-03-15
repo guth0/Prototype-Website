@@ -1,4 +1,37 @@
 // Styles
+class Title {
+  element: HTMLTextAreaElement;
+  defaultText: string;
+  interval: number;
+
+  constructor(element: HTMLTextAreaElement) {
+    this.element = element;
+    this.defaultText = element.getAttribute("defaultText")!;
+  }
+
+  setDecript() {
+    let iteration: number = 0;
+    clearInterval(this.interval);
+    this.interval = setInterval(() => {
+      this.element.innerText = this.element.innerText
+        .split("")
+        .map((_letter, index) => {
+          if (index < iteration) {
+            return this.defaultText[index];
+          }
+
+          return upperLetters[Math.floor(Math.random() * 26)];
+        })
+        .join("");
+      if (iteration >= this.defaultText.length) {
+        clearInterval(this.interval);
+      }
+
+      iteration += 1 / 7;
+    }, 20);
+  }
+}
+
 class MenuItem {
   element: HTMLElement;
   defaultText: string;
@@ -14,7 +47,7 @@ class MenuItem {
       this.element.innerText = this.element.innerText
         .split("")
         .map(() => {
-          return letters[Math.floor(Math.random() * 26)];
+          return allLetters[Math.floor(Math.random() * 52)];
         })
         .join("");
     }, 25);
@@ -35,7 +68,7 @@ class MenuItem {
             return this.defaultText[index];
           }
 
-          return letters[Math.floor(Math.random() * 26)];
+          return allLetters[Math.floor(Math.random() * 52)];
         })
         .join("");
       // cant have items less than 3 characters
@@ -80,6 +113,7 @@ function decriptOrder(menu: MenuItem[], indexFrom: number): MenuItem[][] {
 
 // HTML Elements
 var menuItems: MenuItem[] = [];
+var title: Title;
 
 window.onload = () => {
   let menu: NodeListOf<HTMLElement> = document.querySelectorAll("[data-text]")!;
@@ -87,9 +121,16 @@ window.onload = () => {
     let textElement = menu.item(i);
     menuItems.push(new MenuItem(textElement, i));
   }
+  setTimeout(() => {
+    title = new Title(document.querySelector("[data-title]")!);
+    title.setDecript();
+  }, 50);
 };
 // HTML Elements
 
 // variables
-const letters: string = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const upperLetters: string = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const lowerLetters: string = "abcdefghijklmnopqrstuvwxyz";
+const allLetters: string =
+  "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 // variabels

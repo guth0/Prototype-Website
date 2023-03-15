@@ -1,24 +1,38 @@
 body {
-  background-color: black;
+  background: linear-gradient(335deg, rgb(1, 2, 3) 30%, rgb(50, 50, 50));
+}
+.header {
+  display: flex;
+  height: 20vh;
+  justify-content: center;
+  align-items: center;
+}
+
+.header h1 {
+  font-size: 100px;
+  color: rgb(200, 200, 200);
 }
 
 .container {
-  place-items: center;
-  height: 100vh;
+  display: flex;
+  height: 80vh;
+  width: fit-content;
   overflow: hidden;
-  grid-row-gap: 50px;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
 }
 
-h1 {
+.container h2 {
   font-family: "Space Mono", monospace;
   color: rgb(150, 150, 150);
-  font-size: 80px;
+  font-size: 40px;
   margin: 30px;
   margin-left: 100px;
   width: fit-content;
 }
 
-h1:hover {
-  font-size: 120px;
+.container h2:hover {
+  font-size: 50px;
   color: white;
 }
