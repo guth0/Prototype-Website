@@ -12,7 +12,7 @@ var MenuItem = /** @class */ (function () {
                 return letters[Math.floor(Math.random() * 26)];
             })
                 .join("");
-        }, 30);
+        }, 25);
         this.element.onmouseover = function () {
             decriptMenu(menuItems, _this.index);
         };
@@ -31,16 +31,17 @@ var MenuItem = /** @class */ (function () {
                 return letters[Math.floor(Math.random() * 26)];
             })
                 .join("");
+            // cant have items less than 3 characters
+            if (iteration == 3 && next.length != 0) {
+                next[0][0].setDecript(next.slice(1, next.length));
+                if (next[0].length > 1) {
+                    next[0]
+                        .slice(1, next[0].length)
+                        .forEach(function (item) { return item.setDecript([]); });
+                }
+            }
             if (iteration >= _this.defaultText.length) {
                 clearInterval(_this.interval);
-                if (next != undefined && next[0][0] != undefined) {
-                    next[0][0].setDecript(next.slice(1, next.length));
-                    if (next[0].length > 1) {
-                        next[0]
-                            .slice(1, next[0].length)
-                            .forEach(function (item) { return item.setDecript(undefined); });
-                    }
-                }
             }
             iteration += 1 / 3;
         }, 25);

@@ -17,14 +17,14 @@ class MenuItem {
           return letters[Math.floor(Math.random() * 26)];
         })
         .join("");
-    }, 30);
+    }, 25);
 
     this.element.onmouseover = () => {
       decriptMenu(menuItems, this.index);
     };
   }
 
-  setDecript(next: MenuItem[][] | undefined) {
+  setDecript(next: MenuItem[][]) {
     let iteration: number = 0;
     clearInterval(this.interval);
     this.interval = setInterval(() => {
@@ -38,21 +38,22 @@ class MenuItem {
           return letters[Math.floor(Math.random() * 26)];
         })
         .join("");
-
-      if (iteration >= this.defaultText.length) {
-        clearInterval(this.interval);
-        if (next != undefined && next[0][0] != undefined) {
-          next[0][0].setDecript(next.slice(1, next.length));
-          if (next[0].length > 1) {
-            next[0]
-              .slice(1, next[0].length)
-              .forEach((item) => item.setDecript(undefined));
-          }
+      // cant have items less than 3 characters
+      if (iteration == 3 && next.length != 0) {
+        next[0][0].setDecript(next.slice(1, next.length));
+        if (next[0].length > 1) {
+          next[0]
+            .slice(1, next[0].length)
+            .forEach((item) => item.setDecript([]));
         }
       }
 
+      if (iteration >= this.defaultText.length) {
+        clearInterval(this.interval);
+      }
+
       iteration += 1 / 3;
-    }, 30);
+    }, 25);
   }
 }
 
