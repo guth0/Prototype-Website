@@ -3,26 +3,27 @@ var homeButton;
 // HTML elements
 // Styles
 function initHomeButton() {
-    var _this = this;
     homeButton = document.querySelector("[data-home]");
+    var defaultText = homeButton.getAttribute("defaultText");
+    var interval;
     homeButton.onmouseover = function () {
         var iteration = 0;
-        clearInterval(_this.interval);
-        _this.interval = setInterval(function () {
-            _this.element.innerText = _this.element.innerText
+        clearInterval(interval);
+        interval = setInterval(function () {
+            homeButton.innerText = homeButton.innerText
                 .split("")
                 .map(function (_letter, index) {
                 if (index < iteration) {
-                    return _this.defaultText[index];
+                    return defaultText[index];
                 }
                 return letters[Math.floor(Math.random() * 26)];
             })
                 .join("");
-            if (iteration >= _this.defaultText.length) {
-                clearInterval(_this.interval);
+            if (iteration >= defaultText.length) {
+                clearInterval(interval);
             }
             iteration += 1 / 3;
-        }, 40);
+        }, 20);
     };
 }
 // Styles

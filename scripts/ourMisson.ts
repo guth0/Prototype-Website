@@ -6,28 +6,30 @@ var homeButton: HTMLLinkElement;
 
 function initHomeButton() {
   homeButton = document.querySelector("[data-home]")!;
+  let defaultText: string = homeButton.getAttribute("defaultText")!;
+  let interval: number;
 
   homeButton.onmouseover = () => {
     let iteration: number = 0;
-    clearInterval(this.interval);
-    this.interval = setInterval(() => {
-      this.element.innerText = this.element.innerText
+    clearInterval(interval);
+    interval = setInterval(() => {
+      homeButton.innerText = homeButton.innerText
         .split("")
         .map((_letter, index) => {
           if (index < iteration) {
-            return this.defaultText[index];
+            return defaultText[index];
           }
 
           return letters[Math.floor(Math.random() * 26)];
         })
         .join("");
 
-      if (iteration >= this.defaultText.length) {
-        clearInterval(this.interval);
+      if (iteration >= defaultText.length) {
+        clearInterval(interval);
       }
 
       iteration += 1 / 3;
-    }, 40);
+    }, 20);
   };
 }
 // Styles
