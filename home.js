@@ -19,15 +19,15 @@ var Title = /** @class */ (function () {
                 return upperLetters[Math.floor(Math.random() * 26)];
             })
                 .join("");
-            if (iteration >= _this.defaultText.length - 5 && !nextStarted) {
+            if (iteration >= _this.defaultText.length - 4 && !nextStarted) {
                 next[0].setDecript(next.slice(1, next.length));
                 nextStarted = true;
             }
             if (iteration >= _this.defaultText.length) {
                 clearInterval(_this.interval);
             }
-            iteration += 1 / 4;
-        }, 30);
+            iteration += 1 / 3;
+        }, 40);
     };
     return Title;
 }());
@@ -67,8 +67,8 @@ var MenuItem = /** @class */ (function () {
             if (iteration >= _this.defaultText.length) {
                 clearInterval(_this.interval);
             }
-            iteration += 1 / 3;
-        }, 25);
+            iteration += 1 / 2;
+        }, 35);
     };
     return MenuItem;
 }());

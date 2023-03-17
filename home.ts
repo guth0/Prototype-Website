@@ -24,7 +24,7 @@ class Title {
           return upperLetters[Math.floor(Math.random() * 26)];
         })
         .join("");
-      if (iteration >= this.defaultText.length - 5 && !nextStarted) {
+      if (iteration >= this.defaultText.length - 4 && !nextStarted) {
         next[0].setDecript(next.slice(1, next.length));
         nextStarted = true;
       }
@@ -33,18 +33,18 @@ class Title {
         clearInterval(this.interval);
       }
 
-      iteration += 1 / 4;
-    }, 30);
+      iteration += 1 / 3;
+    }, 40);
   }
 }
 
 class MenuItem {
-  element: HTMLElement;
+  element: HTMLButtonElement;
   defaultText: string;
   interval: number; //Idk why but intervals are numbers :/
   index: number;
 
-  constructor(element: HTMLElement, index: number) {
+  constructor(element: HTMLButtonElement, index: number) {
     this.element = element;
     this.index = index;
     this.defaultText = this.element.getAttribute("defaultText")!;
@@ -82,8 +82,8 @@ class MenuItem {
         clearInterval(this.interval);
       }
 
-      iteration += 1 / 3;
-    }, 25);
+      iteration += 1 / 2;
+    }, 35);
   }
 }
 
@@ -97,7 +97,8 @@ var menuItems: MenuItem[] = [];
 var title: Title;
 
 window.onload = () => {
-  let menu: NodeListOf<HTMLElement> = document.querySelectorAll("[data-text]")!;
+  let menu: NodeListOf<HTMLButtonElement> =
+    document.querySelectorAll("[data-text]")!;
   for (let i = 0; i < menu.length; i++) {
     let textElement = menu.item(i);
     menuItems.push(new MenuItem(textElement, i));

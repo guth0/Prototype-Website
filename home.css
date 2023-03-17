@@ -1,3 +1,9 @@
+*,
+*::before,
+*::after {
+  font: 1.3rem "Inconsolata", monospace;
+}
+
 body {
   background: linear-gradient(335deg, rgb(1, 2, 3) 30%, rgb(50, 50, 50));
 }
@@ -13,7 +19,7 @@ body {
   color: rgb(200, 200, 200);
 }
 
-.container {
+nav {
   display: flex;
   height: 80vh;
   width: fit-content;
@@ -23,16 +29,24 @@ body {
   align-items: flex-start;
 }
 
-.container h2 {
-  font-family: "Space Mono", monospace;
+nav a {
   color: rgb(150, 150, 150);
   font-size: 40px;
   margin: 30px;
   margin-left: 100px;
   width: fit-content;
+  border: none;
+  background: none;
 }
 
-.container h2:hover {
+nav a:hover {
   font-size: 50px;
   color: white;
+}
+
+nav a:link,
+nav a:visited,
+nav a:hover,
+nav a:active {
+  text-decoration: none;
 }
