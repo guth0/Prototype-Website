@@ -1,0 +1,43 @@
+body {
+  background: linear-gradient(rgb(50, 50, 50), rgb(1, 2, 3) 10%);
+  background-attachment: fixed;
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  align-content: center;
+  height: fit-content;
+}
+
+.header .homebutton {
+  font-size: 20px;
+  color: rgb(200, 200, 200);
+  margin: 10px;
+}
+
+.header a:link,
+.header a:visited,
+.header a:hover,
+.header a:active {
+  text-decoration: none;
+}
+
+.productsContainer {
+  display: flex;
+  height: auto;
+  justify-content: center;
+  margin-top: 50px;
+}
+
+.products {
+  display: grid;
+  grid-auto-columns: auto;
+  gap: 30px 50px;
+  grid-template: auto / auto auto auto auto;
+}
+
+.productsContainer .products .product {
+  color: rgb(200, 200, 200);
+  display: block;
+}
